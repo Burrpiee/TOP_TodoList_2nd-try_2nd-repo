@@ -6,7 +6,6 @@ import { format } from 'date-fns';
 
 //Private variable for dom elements
 const dom = {};
-
 //Caching DOM elements
 const cacheDomElements = () => {
     dom.addProjectForm = document.getElementById("add-project-form");
@@ -17,12 +16,11 @@ const cacheDomElements = () => {
     dom.projectSelect = document.getElementById("todo-project");
 }
 
-
 //Initialize the DOM
 const init = () => {
     cacheDomElements();
     setupEventListeners();
-    TodoManager.initialize();
+    TodoManager.initialize(); //Checks if theres existing project in local storage.
     renderProjects();
 };
 
@@ -80,8 +78,7 @@ const setupEventListeners = () => {
                 //Delete button clicked
                 if (actionButton.matches('[data-action="delete"]')){
                     console.log(`delete todo:${todoId}`);
-                    //getprojectid
-                    //project.removetodo()
+                    console.log()
                 }
             }
         }

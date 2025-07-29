@@ -44,20 +44,25 @@ const addTodo = (title, description, dueDate, priority, notes, projectId) => {
     return todo;
 };
 
-//getTodo
-const getTodo = (todoId) => {
-    
+//Get todo from project
+const getTodo = (projectId, todoId) => {
+    const project = getProject(projectId);
+    if (project) {
+        return project.todos.find(todo => todo.id === todoId);
+    }
 };
 
 //Delete todo
-const deleteTodo = (todoId) => {
-
+const deleteTodo = (projectId, todoId) => {
+    const project = getProject(projectId);
+    if (project) {
+        return project.removeTodo(todoId);
+    }
 };
 
-//Get todo
-
-const getAllTodos = (projectId) => {
-
+//Save all the elements in the project array into local storage
+const saveToLocalStorage = () => {
+    localStorage.setItem('todoList_projects', JSON.stringify(projects));
 };
 
 export default {
@@ -67,7 +72,8 @@ export default {
     getProject,
     deleteProject,
     addTodo,
-    getAllTodos,
+    getTodo,
+    deleteTodo,
+    saveToLocalStorage,
     
-
 };
