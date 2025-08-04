@@ -6,6 +6,9 @@ import { format } from 'date-fns';
 
 //Private variable for dom elements
 const dom = {};
+
+let currentProjectId = null;
+
 //Caching DOM elements
 const cacheDomElements = () => {
     dom.addProjectForm = document.getElementById("add-project-form");
@@ -14,6 +17,7 @@ const cacheDomElements = () => {
     dom.todosList = document.getElementById("todo-list");
     dom.projectTitle = document.getElementById("current-project-title");
     dom.projectSelect = document.getElementById("todo-project");
+    dom.editTodoContainer = document.getElementById("todo-details");
 }
 
 //Initialize the DOM
@@ -21,6 +25,16 @@ const init = () => {
     cacheDomElements();
     setupEventListeners();
     TodoManager.initialize(); //Checks if theres existing project in local storage.
+
+    //Check if currentProjectId is populated
+    if (currentProjectId) {
+        renderTodos(currentProjectId);
+    } 
+    if (!currentProjectId){
+        //Select the first project in the project array
+        currentProjectId = (TodoManager.getAllProjects())[0].id
+        renderTodos(currentProjectId);      
+    }
     renderProjects();
 };
 
@@ -73,12 +87,14 @@ const setupEventListeners = () => {
                 //Edit button clicked
                 if (actionButton.matches('[data-action="edit"]')){
                     console.log(`edit todo:${todoId}`)
+                    dom.editTodoContainer.classList.toggle('hidden');
                 }
 
                 //Delete button clicked
                 if (actionButton.matches('[data-action="delete"]')){
                     console.log(`delete todo:${todoId}`);
-                    console.log()
+                    TodoManager.deleteTodo(currentProjectId, todoId);
+                    renderTodos(currentProjectId);
                 }
             }
         }
@@ -98,6 +114,12 @@ const renderProjects = () => {
         projectItem.classList.add('project-list-item');
         projectItem.dataset.projectId = project.id;
 
+        //Add active class to current project when init
+        if (project.id === currentProjectId) {
+            console.log(project.id);
+            projectItem.classList.add('active');
+        }
+
         //Create project items
         projectItem.innerHTML = `
         <div>${project.name}</div>
@@ -115,6 +137,7 @@ const renderProjects = () => {
 
             else {
                 renderTodos(project.id);
+                currentProjectId = project.id;
 
                 //Add active class to show active list item
                 document.querySelectorAll('.project-list-item').forEach(item => {
@@ -167,7 +190,7 @@ const renderTodos = (projectId) => {
 
         todoItem.innerHTML = `
         <div class = "todo-checkbox">
-            <input type="checkbox" id="todo-${todo.id}" ${todo.complete ? 'checked' : ''}> 
+            <input type="checkbox" id="todo-${todo.id}"${todo.complete ? 'checked' : ''}> 
             <label for="todo-${todo.id}">
                 <span class="checkbox-circle"></span>
             </label>

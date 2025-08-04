@@ -33,3 +33,11 @@ cancelTodoForm.addEventListener("click", () => {
     addTodoContainer.classList.add("hidden");
     document.getElementById("add-todo-form").reset();
 });
+
+//Edit Todo form controls
+const editTodoContainer = document.getElementById('todo-details');
+const cancelEditTodoForm = document.getElementById('close-details-button');
+
+cancelEditTodoForm.addEventListener("click", () => {
+    editTodoContainer.classList.add('hidden');
+})

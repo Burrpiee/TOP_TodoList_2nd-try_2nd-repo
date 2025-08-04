@@ -10,6 +10,7 @@ const initialize = () => {
     if (projects.length === 0) {
         addProject('Default', 'Default project for todos');
     }
+    saveToLocalStorage();
     return projects;
 }
 
@@ -17,13 +18,14 @@ const initialize = () => {
 const addProject = (name, description) => {
     const project = new Project(name, description);
     projects.push(project);
-
+    saveToLocalStorage();
     return project; 
 };
 
 //Delete project from project array
 const deleteProject = (projectId) => {
     projects = projects.filter(project => project.id !== projectId);
+    saveToLocalStorage();
 };
 
 const getProject = (projectId) => {
@@ -39,8 +41,8 @@ const getAllProjects = () => {
 const addTodo = (title, description, dueDate, priority, notes, projectId) => {
     const project = getProject(projectId);
     const todo =  new Todo(title, description, dueDate, priority, notes, projectId);
-
     project.addTodo(todo);
+    saveToLocalStorage();
     return todo;
 };
 
@@ -58,6 +60,7 @@ const deleteTodo = (projectId, todoId) => {
     if (project) {
         return project.removeTodo(todoId);
     }
+    saveToLocalStorage();
 };
 
 //Save all the elements in the project array into local storage
