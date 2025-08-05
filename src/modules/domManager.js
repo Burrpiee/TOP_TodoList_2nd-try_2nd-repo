@@ -30,7 +30,14 @@ const init = () => {
     if (storedProjectId) {
         currentProjectId = storedProjectId;
     }
+
+    //Check if currentProjectId is populated
+    if (!currentProjectId){
+        //Select the first project in the project array
+        currentProjectId = (TodoManager.getAllProjects())[0].id;     
+    }
     renderProjects();
+    renderTodos(currentProjectId); 
 };
 
 //Setup event listeners
@@ -111,16 +118,7 @@ const renderProjects = () => {
         const projectItem = document.createElement('li');
         projectItem.classList.add('project-list-item');
         projectItem.dataset.projectId = project.id;
-
-        //Check if currentProjectId is populated
-        if (currentProjectId) {
-            renderTodos(currentProjectId);
-        } 
-        if (!currentProjectId){
-            //Select the first project in the project array
-            currentProjectId = (TodoManager.getAllProjects())[0].id;
-            renderTodos(currentProjectId);      
-        }
+        
         //Add active class to current project when init
         if (project.id === currentProjectId) {
             console.log(project.id);
@@ -147,11 +145,11 @@ const renderProjects = () => {
                     if (deletedProjectIndex !== 0) {
                         const previousProjectId = projects[deletedProjectIndex - 1].id;
                         //Renders todos 1 project before
-                        if (previousProjectId) {
-                            currentProjectId = previousProjectId;
-                            renderTodos(previousProjectId) 
-                            renderProjects();
-                        }
+                        currentProjectId = previousProjectId;
+                        renderTodos(previousProjectId) 
+                        renderProjects();
+                    } else {
+                        localStorage.clear('currentProjectId');
                     }
                 }
             }
