@@ -32,6 +32,11 @@ const getProject = (projectId) => {
     return projects.find(project => project.id === projectId);
 }
 
+const getProjectIndex = (projectId) => {
+    const project = getProject(projectId);
+    return (projects.indexOf(project));
+}
+
 //Return all projects in project array
 const getAllProjects = () => {
     return projects;
@@ -72,11 +77,6 @@ const saveToLocalStorage = () => {
 const loadFromLocalStorage = () => {
     const savedProjects = JSON.parse(localStorage.getItem('todoList_projects'));
 
-    if (!savedProjects) {
-        projects = [];
-        return;
-    }
-
     try {
         if (savedProjects && Array.isArray(savedProjects)) {
             projects = savedProjects.map(pData => {
@@ -102,7 +102,6 @@ const loadFromLocalStorage = () => {
         }    
     } catch (error) {
         console.error("Error getting projects from localStorage", error);
-        projects = [];
     }
 };
 
@@ -111,6 +110,7 @@ export default {
     addProject,
     getAllProjects,
     getProject,
+    getProjectIndex,
     deleteProject,
     addTodo,
     getTodo,

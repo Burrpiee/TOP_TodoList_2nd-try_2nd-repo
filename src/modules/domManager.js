@@ -26,14 +26,9 @@ const init = () => {
     setupEventListeners();
     TodoManager.initialize(); //Checks if theres existing project in local storage.
 
-    //Check if currentProjectId is populated
-    if (currentProjectId) {
-        renderTodos(currentProjectId);
-    } 
-    if (!currentProjectId){
-        //Select the first project in the project array
-        currentProjectId = (TodoManager.getAllProjects())[0].id
-        renderTodos(currentProjectId);      
+    const storedProjectId = localStorage.getItem('currentProjectId');
+    if (storedProjectId) {
+        currentProjectId = storedProjectId;
     }
     renderProjects();
 };
@@ -70,6 +65,9 @@ const setupEventListeners = () => {
             renderTodos(projectId);
             dom.addTodoForm.reset();
             document.getElementById('add-todo-container').classList.add('hidden');
+            //Change to
+            currentProjectId = projectId;
+            renderProjects();
         }
     });
 
@@ -114,6 +112,15 @@ const renderProjects = () => {
         projectItem.classList.add('project-list-item');
         projectItem.dataset.projectId = project.id;
 
+        //Check if currentProjectId is populated
+        if (currentProjectId) {
+            renderTodos(currentProjectId);
+        } 
+        if (!currentProjectId){
+            //Select the first project in the project array
+            currentProjectId = (TodoManager.getAllProjects())[0].id;
+            renderTodos(currentProjectId);      
+        }
         //Add active class to current project when init
         if (project.id === currentProjectId) {
             console.log(project.id);
@@ -130,20 +137,31 @@ const renderProjects = () => {
         projectItem.addEventListener('click', (e) => {
             if (e.target.classList.contains('project-delete-button')) {
                 if (confirm("Delete this project and all it's todos?")) {
+                    const deletedProjectIndex = TodoManager.getProjectIndex(project.id);
+                    const projects = TodoManager.getAllProjects();
+                    const previousProjectId = projects[deletedProjectIndex - 1].id;
+
                     TodoManager.deleteProject(project.id);
+                    //Renders todos 1 project before
+                    currentProjectId = previousProjectId;
+                    renderTodos(previousProjectId) 
                     renderProjects();
                 }
             }
 
             else {
-                renderTodos(project.id);
                 currentProjectId = project.id;
+                localStorage.setItem('currentProjectId', currentProjectId);
 
                 //Add active class to show active list item
                 document.querySelectorAll('.project-list-item').forEach(item => {
                     item.classList.remove('active');
                 });
                 projectItem.classList.add('active');
+
+                renderTodos(project.id);
+                //Changes the dropdown value to current project
+                dom.projectSelect.value = project.id;
             }
         });
 

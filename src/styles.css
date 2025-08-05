@@ -96,7 +96,7 @@ li {
     font-size: 1.2rem;
     font-weight: 500;
     color: white;
-    background-color: gray;
+    background-color: dimgray;
     border-radius: 8px;
     margin-bottom: 8px;
 
@@ -111,7 +111,7 @@ li {
 
     button {
         border: 0;
-        background-color: gray;
+        background-color: dimgray;
         color: white;
 
         &:hover {
