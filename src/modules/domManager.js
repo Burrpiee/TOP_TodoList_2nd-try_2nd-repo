@@ -139,13 +139,20 @@ const renderProjects = () => {
                 if (confirm("Delete this project and all it's todos?")) {
                     const deletedProjectIndex = TodoManager.getProjectIndex(project.id);
                     const projects = TodoManager.getAllProjects();
-                    const previousProjectId = projects[deletedProjectIndex - 1].id;
 
                     TodoManager.deleteProject(project.id);
-                    //Renders todos 1 project before
-                    currentProjectId = previousProjectId;
-                    renderTodos(previousProjectId) 
                     renderProjects();
+
+                    //If project is not last project
+                    if (deletedProjectIndex !== 0) {
+                        const previousProjectId = projects[deletedProjectIndex - 1].id;
+                        //Renders todos 1 project before
+                        if (previousProjectId) {
+                            currentProjectId = previousProjectId;
+                            renderTodos(previousProjectId) 
+                            renderProjects();
+                        }
+                    }
                 }
             }
 
