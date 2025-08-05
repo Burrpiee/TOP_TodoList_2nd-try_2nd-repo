@@ -3,11 +3,11 @@ import generateUniqueID from './utils/idGenerator';
 //Project factory
 
 class Project {
-    constructor(name, description) {
+    constructor(name, description, id = generateUniqueID()) {
         this.name = name;
         this.description = description;
         this.todos = [];
-        this.id = generateUniqueID();
+        this.id = id;
     }
 
     addTodo(todo) {

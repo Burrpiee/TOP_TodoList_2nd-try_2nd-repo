@@ -2,7 +2,7 @@ import generateUniqueID from "./utils/idGenerator";
 //Todo factory
 
 class Todo {
-    constructor(title, description, dueDate, priority, notes = "", projectId, checklist = [], isCompleted = false) {
+    constructor(title, description, dueDate, priority, notes = "", projectId, checklist = [], isCompleted = false, id = generateUniqueID()) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -11,7 +11,7 @@ class Todo {
         this.projectId = projectId;
         this.checklist = checklist;
         this.isCompleted = isCompleted;
-        this.id = generateUniqueID();
+        this.id = id;
     }
 
     toggleisComplete() {

@@ -7,10 +7,10 @@ let projects = [];
 
 //Default project
 const initialize = () => {
+    loadFromLocalStorage();
     if (projects.length === 0) {
         addProject('Default', 'Default project for todos');
     }
-    saveToLocalStorage();
     return projects;
 }
 
@@ -68,6 +68,44 @@ const saveToLocalStorage = () => {
     localStorage.setItem('todoList_projects', JSON.stringify(projects));
 };
 
+
+const loadFromLocalStorage = () => {
+    const savedProjects = JSON.parse(localStorage.getItem('todoList_projects'));
+
+    if (!savedProjects) {
+        projects = [];
+        return;
+    }
+
+    try {
+        if (savedProjects && Array.isArray(savedProjects)) {
+            projects = savedProjects.map(pData => {
+                //Restore projects
+                const project = new Project(pData.name, pData.description, pData.id);
+                //Restore todos
+                project.todos = pData.todos.map(tData => {
+                    const todo = new Todo(
+                        tData.title, 
+                        tData.description, 
+                        tData.dueDate, 
+                        tData.priority, 
+                        tData.notes, 
+                        tData.projectId, 
+                        tData.checklist, 
+                        tData.isCompleted,
+                        tData.id
+                    );
+                    return todo;
+                });
+                return project;
+            })
+        }    
+    } catch (error) {
+        console.error("Error getting projects from localStorage", error);
+        projects = [];
+    }
+};
+
 export default {
     initialize,
     addProject,
@@ -78,5 +116,6 @@ export default {
     getTodo,
     deleteTodo,
     saveToLocalStorage,
-    
+    loadFromLocalStorage,
+
 };
