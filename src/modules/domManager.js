@@ -263,13 +263,14 @@ const renderTodos = (projectId) => {
 };
 
 const renderChecklist = (checklistArray) => {
+    dom.checklistContainer.innerHTML = '';
+
     checklistArray.forEach(checklist => {
-        dom.checklistContainer.innerHTML = '';
         const checklistItem = document.createElement('li');
         checklistItem.classList.add('checklist-item');
 
         checklistItem.innerHTML = `
-        <div>${checklist.name}</div>
+        <h4>${checklist.name}</h4>
         <input type="checkbox">`
 
         dom.checklistContainer.appendChild(checklistItem);

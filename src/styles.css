@@ -182,7 +182,7 @@ li {
     grid-template-columns: auto 1fr auto;
     gap: 1rem;
     padding: 1rem;
-    background-color: gray;
+    background-color: dimgray;
     color: white;
     border-radius: 12px;
     box-shadow:
@@ -310,12 +310,29 @@ li {
     margin-bottom: 12px;
 }
 
+.checklist-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.checklist-item {
+    display: flex;
+    justify-content: space-between;
+    background-color: dimgray;
+    color: white;
+    padding: 0.5rem 0.8rem;
+    border-radius: 4px;
+
+}
+
 .add-checklist-form {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    margin-top: 0.25rem;
+    margin-top: 1rem;
 
     input[type="text"] {
         padding: 0.3rem;
