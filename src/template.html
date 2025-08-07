@@ -147,25 +147,25 @@
                         <label for="edit-notes">Notes</label>
                         <textarea id="edit-notes"></textarea>
                     </div>
-
-                    <!-- Checklist section of a todo -->
-                    <div class="checklist-section">
-                        <h3>Checklist</h3>
-                        <!-- Checklist items -->
-                        <div id="checklist-items" class="checklist-items"></div>
-                        <!-- Input to add new checklist item -->
-                        <div class="add-checklist-item">
-                            <input type="text" id="new-checklist-item" placeholder="New checklist item">
-                            <button type="button" id="add-checklist-item" class="add-button">+</button>
-                        </div>
-                    </div>
-
-                    <!-- Checklist buttons -->
-                    <div class="checklist-form-action">
-                        <button type="button" id="cancel-edit" class="btn-cancel">Cancel</button>
-                        <button type="submit" class="submit-btn">Save Changes</button>
-                    </div>
                 </form>
+
+                <!-- Checklist section of a todo -->
+                <div class="checklist-section">
+                    <h3>Checklist</h3>
+                    <!-- Checklist container -->
+                    <div id="checklist-container" class="checklist-container"></div>
+                    <!-- Input to add new checklist item -->
+                    <form class="add-checklist-form" id="add-checklist-form">
+                        <input type="text" id="new-checklist-item" placeholder="New checklist item">
+                        <button type="submit" id="add-checklist-button" class="add-button">+</button>
+                    </form>
+                </div>
+
+                <!-- Checklist buttons -->
+                <div class="checklist-form-action">
+                    <button type="button" id="cancel-edit" class="cancel-btn">Cancel</button>
+                    <button type="submit" class="submit-btn">Save Changes</button>
+                </div>
             </div>
         </div>
     </div>

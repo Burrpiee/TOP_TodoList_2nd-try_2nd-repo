@@ -310,9 +310,10 @@ li {
     margin-bottom: 12px;
 }
 
-.add-checklist-item {
+.add-checklist-form {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 1rem;
     margin-top: 0.25rem;
 

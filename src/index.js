@@ -1,13 +1,10 @@
 import "./styles.css";
 import DomManager from "./modules/domManager";
-import TodoManager from "./modules/todoManager";
 
 //Initialization steps
 DomManager.init();
 
-
-//Form control
-
+//Form control:
 //Project form controls
 const addProjectButton = document.getElementById("add-projects-button");
 const addProjectContainer = document.getElementById("add-project-container");

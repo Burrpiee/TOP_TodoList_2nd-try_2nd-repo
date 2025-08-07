@@ -68,6 +68,7 @@ const deleteTodo = (projectId, todoId) => {
     saveToLocalStorage();
 };
 
+
 //Save all the elements in the project array into local storage
 const saveToLocalStorage = () => {
     localStorage.setItem('todoList_projects', JSON.stringify(projects));

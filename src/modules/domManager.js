@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 const dom = {};
 
 let currentProjectId = null;
+let currentlyEditingTodoId = null;
 
 //Caching DOM elements
 const cacheDomElements = () => {
@@ -18,6 +19,14 @@ const cacheDomElements = () => {
     dom.projectTitle = document.getElementById("current-project-title");
     dom.projectSelect = document.getElementById("todo-project");
     dom.editTodoContainer = document.getElementById("todo-details");
+    dom.editTitle = document.getElementById("edit-title");
+    dom.editDescription = document.getElementById("edit-description");
+    dom.editDueDate = document.getElementById("edit-due-date");
+    dom.editPriority = document.getElementById("edit-priority");
+    dom.editNotes = document.getElementById("edit-notes");
+    dom.checklistContainer = document.getElementById("checklist-container");
+    dom.addChecklistForm = document.getElementById('add-checklist-form');
+    dom.checklistItemName = document.getElementById('new-checklist-item');
 }
 
 //Initialize the DOM
@@ -31,7 +40,6 @@ const init = () => {
         currentProjectId = storedProjectId;
     }
 
-    //Check if currentProjectId is populated
     if (!currentProjectId){
         //Select the first project in the project array
         currentProjectId = (TodoManager.getAllProjects())[0].id;     
@@ -72,7 +80,7 @@ const setupEventListeners = () => {
             renderTodos(projectId);
             dom.addTodoForm.reset();
             document.getElementById('add-todo-container').classList.add('hidden');
-            //Change to
+
             currentProjectId = projectId;
             renderProjects();
         }
@@ -92,6 +100,22 @@ const setupEventListeners = () => {
                 //Edit button clicked
                 if (actionButton.matches('[data-action="edit"]')){
                     console.log(`edit todo:${todoId}`)
+                    const todo = TodoManager.getTodo(currentProjectId, todoId);
+                    currentlyEditingTodoId = todoId;
+                    console.log(currentlyEditingTodoId);
+
+                    //Fill in form with existing values
+                    dom.editTitle.value = todo.title;
+                    dom.editDescription.value = todo.description;
+                    dom.editDueDate.value = todo.dueDate;
+                    dom.editPriority.value = todo.priority;
+                    dom.editNotes.value = todo.notes;
+                    
+                    //Rendering todo's checklist 
+                    if (todo.checklist && todo.checklist.length > 0) {
+                        renderChecklist(todo.checklist);
+                    }
+
                     dom.editTodoContainer.classList.toggle('hidden');
                 }
 
@@ -103,6 +127,17 @@ const setupEventListeners = () => {
                 }
             }
         }
+    });
+
+    //Submission of add checklist form
+    dom.addChecklistForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const checklistName = dom.checklistItemName.value.trim();
+        const todo = TodoManager.getTodo(currentProjectId, currentlyEditingTodoId);
+        dom.addChecklistForm.reset();
+
+        todo.checklist.push({name: checklistName, completed: false});
+        renderChecklist(todo.checklist);
     });
 };
 
@@ -121,7 +156,6 @@ const renderProjects = () => {
         
         //Add active class to current project when init
         if (project.id === currentProjectId) {
-            console.log(project.id);
             projectItem.classList.add('active');
         }
 
@@ -175,8 +209,6 @@ const renderProjects = () => {
         option.value = project.id;
         option.textContent = project.name;
         dom.projectSelect.appendChild(option);
-        //Choose the first project if no projects were previosly selected
-
     });
 };
 
@@ -198,7 +230,6 @@ const renderTodos = (projectId) => {
             <div>There are currently no todos.</div>
             <div>Click the '+' button on top to add one!</div>
         </div>`;
-
         return;
     }
 
@@ -231,11 +262,21 @@ const renderTodos = (projectId) => {
     });
 };
 
+const renderChecklist = (checklistArray) => {
+    checklistArray.forEach(checklist => {
+        dom.checklistContainer.innerHTML = '';
+        const checklistItem = document.createElement('li');
+        checklistItem.classList.add('checklist-item');
+
+        checklistItem.innerHTML = `
+        <div>${checklist.name}</div>
+        <input type="checkbox">`
+
+        dom.checklistContainer.appendChild(checklistItem);
+    });
+}
+
 
 export default {
-    init,
-    setupEventListeners,
-    renderProjects,
-    renderTodos,
-
+    init
 };
