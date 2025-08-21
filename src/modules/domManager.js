@@ -1,5 +1,6 @@
 import Project from "./project";
 import Todo from "./todo";
+import todoManager from "./todoManager";
 import TodoManager from "./todoManager";
 import { format } from 'date-fns';
 //DOM manager
@@ -91,6 +92,7 @@ const setupEventListeners = () => {
         const clickedElement = e.target;
         const actionButton = clickedElement.closest('button');
 
+        // Edit and delete button section
         if(actionButton) {
             const todoItem = actionButton.closest('.todo-item');
 
@@ -127,6 +129,21 @@ const setupEventListeners = () => {
                 }
             }
         }
+
+        //Checkbox section
+        if (clickedElement.matches('input[type="checkbox"]')) {
+            const todoItem = clickedElement.closest('.todo-item');
+            if (todoItem) {
+                const todoId =  todoItem.dataset.id;
+                const todo = TodoManager.getTodo(currentProjectId, todoId);
+
+                todo.toggleIsCompleted();
+                console.log(todo.isCompleted)
+                renderTodos(currentProjectId);
+                TodoManager.saveToLocalStorage();
+                //need to have a function in todomanager to save to localstorage
+            }
+        }
     });
 
     //Submission of add checklist form
@@ -137,6 +154,7 @@ const setupEventListeners = () => {
         dom.addChecklistForm.reset();
 
         todo.checklist.push({name: checklistName, completed: false});
+        todoManager.saveToLocalStorage();
         renderChecklist(todo.checklist);
     });
 };
@@ -162,7 +180,7 @@ const renderProjects = () => {
         //Create project items
         projectItem.innerHTML = `
         <div>${project.name}</div>
-        <button class = "project-delete-button">x</button>`;
+        <button class="project-delete-button">x</button>`;
 
         dom.projectsList.appendChild(projectItem);
 
@@ -244,7 +262,7 @@ const renderTodos = (projectId) => {
 
         todoItem.innerHTML = `
         <div class = "todo-checkbox">
-            <input type="checkbox" id="todo-${todo.id}"${todo.complete ? 'checked' : ''}> 
+            <input type="checkbox" id="todo-${todo.id}"${todo.isCompleted ? 'checked' : ''}> 
             <label for="todo-${todo.id}">
                 <span class="checkbox-circle"></span>
             </label>
@@ -270,8 +288,12 @@ const renderChecklist = (checklistArray) => {
         checklistItem.classList.add('checklist-item');
 
         checklistItem.innerHTML = `
-        <h4>${checklist.name}</h4>
-        <input type="checkbox">`
+        <div class="checklist-elements">
+            <input type="checkbox" ${checklistItem.completed ? 'checked' : ''}>
+            <h4>${checklist.name}</h4>
+        </div>
+        <button class="delete-checklist-button">x</button>
+        `
 
         dom.checklistContainer.appendChild(checklistItem);
     });

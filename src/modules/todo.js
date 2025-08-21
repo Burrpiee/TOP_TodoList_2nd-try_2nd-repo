@@ -14,7 +14,7 @@ class Todo {
         this.id = id;
     }
 
-    toggleisComplete() {
+    toggleIsCompleted() {
         this.isCompleted = !this.isCompleted;
     }
 
