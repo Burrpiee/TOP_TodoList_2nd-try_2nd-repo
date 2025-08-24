@@ -63,11 +63,11 @@ const getTodo = (projectId, todoId) => {
 const deleteTodo = (projectId, todoId) => {
     const project = getProject(projectId);
     if (project) {
-        return project.removeTodo(todoId);
+        project.removeTodo(todoId);
+        saveToLocalStorage();
     }
-    saveToLocalStorage();
+    
 };
-
 
 //Save all the elements in the project array into local storage
 const saveToLocalStorage = () => {

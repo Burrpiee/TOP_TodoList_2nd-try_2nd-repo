@@ -1,8 +1,6 @@
-import Project from "./project";
-import Todo from "./todo";
-import todoManager from "./todoManager";
 import TodoManager from "./todoManager";
 import { format } from 'date-fns';
+import generateUniqueID from "./utils/idGenerator";
 //DOM manager
 
 //Private variable for dom elements
@@ -151,12 +149,15 @@ const setupEventListeners = () => {
         e.preventDefault();
         const checklistName = dom.checklistItemName.value.trim();
         const todo = TodoManager.getTodo(currentProjectId, currentlyEditingTodoId);
-        dom.addChecklistForm.reset();
 
-        todo.checklist.push({name: checklistName, completed: false});
-        todoManager.saveToLocalStorage();
+        todo.checklist.push({name: checklistName, completed: false, id: generateUniqueID()});
         renderChecklist(todo.checklist);
+        
+        TodoManager.saveToLocalStorage();
+        dom.addChecklistForm.reset();
     });
+
+    //Checklist form actions
 };
 
 //Rendering of projects in projects list
@@ -286,10 +287,11 @@ const renderChecklist = (checklistArray) => {
     checklistArray.forEach(checklist => {
         const checklistItem = document.createElement('li');
         checklistItem.classList.add('checklist-item');
+        checklistItem.dataset.id = checklist.id;
 
         checklistItem.innerHTML = `
         <div class="checklist-elements">
-            <input type="checkbox" ${checklistItem.completed ? 'checked' : ''}>
+            <input type="checkbox" ${checklist.completed ? 'checked' : ''}>
             <h4>${checklist.name}</h4>
         </div>
         <button class="delete-checklist-button">x</button>
@@ -297,7 +299,7 @@ const renderChecklist = (checklistArray) => {
 
         dom.checklistContainer.appendChild(checklistItem);
     });
-}
+};
 
 
 export default {

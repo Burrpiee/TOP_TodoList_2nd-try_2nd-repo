@@ -313,7 +313,6 @@ li {
 .checklist-container {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
 }
 
 .checklist-item {
