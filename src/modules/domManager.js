@@ -135,7 +135,6 @@ const setupEventListeners = () => {
                 const todo = TodoManager.getTodo(currentProjectId, todoId);
 
                 todo.toggleIsCompleted();
-                console.log(todo.isCompleted)
                 renderTodos(currentProjectId);
                 TodoManager.saveToLocalStorage();
                 //need to have a function in todomanager to save to localstorage
@@ -292,6 +291,15 @@ const renderTodos = (projectId) => {
         todoItem.classList.add("todo-item");
         todoItem.dataset.id = todo.id;
 
+        //Priority color
+        const priorityClass = `priority-${todo.priority}`;
+        todoItem.classList.add(priorityClass);
+
+        //Strikethrough style if todo is completed
+        const titleClass = todo.isCompleted ? 'todo-title completed' : 'todo-title';
+        const dueDateClass = todo.isCompleted ? 'todo-dueDate completed' :
+        'todo-dueDate';
+
         //Formatting of date using datefns
         const dueDate = new Date(todo.dueDate);
         const formattedDate = format(dueDate, 'dd-MM-yyyy');
@@ -304,8 +312,8 @@ const renderTodos = (projectId) => {
             </label>
         </div>
         <div class = "todo-content">
-            <h3 class ="todo-title">${todo.title}</h3>
-            <div class ="todo-duedate">${formattedDate}</div>
+            <h3 class="${titleClass}">${todo.title}</h3>
+            <div class="${dueDateClass}">${formattedDate}</div>
         </div>
         <div class = "todo-actions">
             <button class="todo-edit" data-action="edit" data-todoId="${todo.id}">Edit</button>

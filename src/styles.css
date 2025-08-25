@@ -182,12 +182,27 @@ li {
     grid-template-columns: auto 1fr auto;
     gap: 1rem;
     padding: 1rem;
+    padding-left: 0.7rem;
     background-color: dimgray;
     color: white;
     border-radius: 12px;
     box-shadow:
     0 1px 2px rgba(0, 0, 0, 0.07),
     0 2px 4px rgba(0, 0, 0, 0.07);
+
+    border-left: 0.7rem solid transparent;
+    transition: border-left-color 0.2s ease;
+}
+
+/* Todo item priority colors */
+.todo-item.priority-low {
+    border-left-color: #28a745; /* Green */
+}
+.todo-item.priority-medium {
+    border-left-color: #ffc107; /* Yellow */
+}
+.todo-item.priority-high {
+    border-left-color: #dc3545; /* Red */
 }
 
 /* todo item checkbox section */
@@ -431,4 +446,10 @@ input[type="text"] {
 
 textarea {
     min-height: 100px;
+}
+
+/* Strikethrough text when todo is completed */
+.completed {
+    text-decoration: line-through;
+    opacity: 0.8;
 }
