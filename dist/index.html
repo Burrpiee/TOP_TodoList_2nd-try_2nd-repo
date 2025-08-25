@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+<script defer src="main.js"></script></head>
+<body>
+    <!-- Overall container and headings -->
+    <div id="main-content" class="main-content">
+        <div class="sidebar">
+            <h1>To Do List</h1>
+            <hr>
+            <div class="projects">
+                <div class="projects-header">
+                    <h2>Projects</h2>
+                    <button class="add-button" id="add-projects-button">+</button>
+                </div>
+                <ul id="projects-list" class="projects-list">
+                </ul>
+                    
+                <!-- Form to add new project -->
+                <div id="add-project-container">
+                    <form id="add-project-form">
+                        <h3 class="add-project-header">Add Project</h3>
+                        <!-- Name -->
+                        <div class="form-group">
+                            <label for="project_name">Name</label>
+                            <input type="text" id="project_name" required>
+                        </div>
+                        <!-- Description -->
+                        <div class="form-group">
+                            <label for="project_desc">Description</label>
+                            <textarea name="project_desc" id="project_desc"></textarea>
+                        </div>
+                        <div class="project-form-action">
+                            <button type="button" id="cancel-add-project" class="cancel-btn">Cancel</button>
+                            <button type="submit" class="submit-btn">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Name of current project -->
+        <div class="content">
+            <div class="content-header">
+                <h1 id="current-project-title">Default</h1>
+                <button class="add-button" id="add-todo-button">+</button>
+            </div>
+            <hr>
+            <!-- form to add todo to project -->
+            <div id="add-todo-container" class="hidden">
+                <form id="add-todo-form">
+                    <h3 class="todo-form-title">New Todo Item</h3>
+                    <!-- Title -->
+                    <div class="form-group">
+                        <label for="todo-title">Title</label>
+                        <input type="text" id="todo-title" required>
+                    </div>
+                    <!-- Description -->
+                    <div class="form-group">
+                        <label for="todo-desc">Description</label>
+                        <textarea id="todo-desc"></textarea>
+                    </div>
+                    <!-- Due Date and priority row-->
+                    <div class="form-row">
+                        <!-- Due date -->
+                        <div class="form-group">
+                            <label for="todo-due-date">Date</label>
+                            <input type="date" id="todo-due-date" required>
+                        </div>
+                        <!-- Priority -->
+                        <div class="form-group">
+                            <label for="todo-priority">Priority</label>
+                            <select id="todo-priority">
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Notes -->
+                    <div class="form-group">
+                        <label for="todo-notes">Notes</label>
+                        <textarea id="todo-notes"></textarea>
+                    </div>
+                    <!-- Project selector -->
+                    <div class="form-group">
+                        <label for="todo-project">Project</label>
+                        <select id="todo-project">
+                        </select>
+                    </div>
+                    <!-- Add todo and close form buttons -->
+                    <div class="todo-form-action">
+                        <button type="button"
+                        id="cancel-todo-button" class="cancel-btn">Cancel</button>
+                        <button type="submit" class="submit-btn">Add</button>
+                    </div>
+                </form>
+            </div>
+            <div id="todo-list" class="todo-list"></div>
+        </div>
+
+        <!-- Form for todo details -->
+        <div id="todo-details" class="todo-details hidden" >
+            <div class="details-content">
+                <div class="details-header">
+                    <h2>Todo details</h2>
+                    <button id="close-details-button" class="close-button">x</button>
+                </div>
+
+                <!-- Form to edit todo's details -->
+                <form id="edit-todo-form">
+                    <!-- Title -->
+                    <div class="form-group">
+                        <label for="edit-title">Title</label>
+                        <input type="text" id="edit-title" required>
+                    </div>
+                    <!-- Description -->
+                    <div class="form-group">
+                        <label for="edit-description">Description</label>
+                        <textarea id="edit-description"></textarea>
+                    </div>
+                    <!-- Due date and priority row -->
+                    <div class="form-row">
+                        <!-- Due date -->
+                        <div class="form-group">
+                            <label for="edit-due-date">Due Date</label>
+                            <input type="date" id="edit-due-date" required>
+                        </div>
+                        <!-- Priority -->
+                        <div class="form-group">
+                            <label for="edit-priority">Priority</label>
+                            <select id="edit-priority">
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Notes -->
+                    <div class="form-group">
+                        <label for="edit-notes">Notes</label>
+                        <textarea id="edit-notes"></textarea>
+                    </div>
+                    <!-- Checklist buttons -->
+                    <div class="checklist-form-action">
+                        <button type="button" id="cancel-edit" class="cancel-btn">Cancel</button>
+                        <button type="submit" class="submit-btn">Save Changes</button>
+                    </div>
+                </form>
+
+                <!-- Checklist section of a todo -->
+                <div class="checklist-section">
+                    <h3 style="text-align: center;"><u>Checklist</u></h3>
+                    <!-- Checklist container -->
+                    <div id="checklist-container" class="checklist-container"></div>
+                    <!-- Input to add new checklist item -->
+                    <form class="add-checklist-form" id="add-checklist-form">
+                        <input type="text" id="new-checklist-item" placeholder="New checklist item">
+                        <button type="submit" id="add-checklist-button" class="add-button">+</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
