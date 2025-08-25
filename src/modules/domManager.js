@@ -158,16 +158,22 @@ const setupEventListeners = () => {
     //Checklist form actions
     dom.checklistContainer.addEventListener('click', (e) => {
         const clickedElement = e.target;
+        const clickedChecklistItem = clickedElement.closest('.checklist-item');
+        const checklistId = clickedChecklistItem.dataset.id;
+        const currentTodo = TodoManager.getTodo(currentProjectId, currentlyEditingTodoId);
 
+        //Delete button
         if(clickedElement.classList.contains('delete-checklist-button')) {
-            const checklistItem = clickedElement.closest('.checklist-item');
-            const checklistId = checklistItem.dataset.id;
-            console.log(checklistId);
-            const currentTodo = TodoManager.getTodo(currentProjectId, currentlyEditingTodoId);
-
             currentTodo.deleteChecklistItem(checklistId);
             TodoManager.saveToLocalStorage();
             renderChecklist(currentTodo.checklist);
+        }
+
+        //Checkbox section
+        if (clickedElement.matches('input[type="checkbox"]')) {
+            const checklistItem = currentTodo.getChecklistItem(checklistId);
+            checklistItem.completed = !checklistItem.completed;
+            TodoManager.saveToLocalStorage();
         }
     })
 };

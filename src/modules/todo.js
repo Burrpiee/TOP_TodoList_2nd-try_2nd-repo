@@ -26,6 +26,10 @@ class Todo {
         this.dueDate = newDate;
     }
 
+    getChecklistItem(checklistId) {
+        return this.checklist.find(checklistItem => checklistItem.id === checklistId);
+    }
+
     deleteChecklistItem(checklistId) {
         this.checklist = this.checklist.filter(checklistItem => checklistItem.id !== checklistId);
     }
