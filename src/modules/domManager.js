@@ -99,10 +99,8 @@ const setupEventListeners = () => {
 
                 //Edit button clicked
                 if (actionButton.matches('[data-action="edit"]')){
-                    console.log(`edit todo:${todoId}`)
                     const todo = TodoManager.getTodo(currentProjectId, todoId);
                     currentlyEditingTodoId = todoId;
-                    console.log(currentlyEditingTodoId);
 
                     //Fill in form with existing values
                     dom.editTitle.value = todo.title;
@@ -158,6 +156,20 @@ const setupEventListeners = () => {
     });
 
     //Checklist form actions
+    dom.checklistContainer.addEventListener('click', (e) => {
+        const clickedElement = e.target;
+
+        if(clickedElement.classList.contains('delete-checklist-button')) {
+            const checklistItem = clickedElement.closest('.checklist-item');
+            const checklistId = checklistItem.dataset.id;
+            console.log(checklistId);
+            const currentTodo = TodoManager.getTodo(currentProjectId, currentlyEditingTodoId);
+
+            currentTodo.deleteChecklistItem(checklistId);
+            TodoManager.saveToLocalStorage();
+            renderChecklist(currentTodo.checklist);
+        }
+    })
 };
 
 //Rendering of projects in projects list

@@ -25,6 +25,10 @@ class Todo {
     updateDueDate(newDate) {
         this.dueDate = newDate;
     }
+
+    deleteChecklistItem(checklistId) {
+        this.checklist = this.checklist.filter(checklistItem => checklistItem.id !== checklistId);
+    }
 }
 
 export default Todo;
