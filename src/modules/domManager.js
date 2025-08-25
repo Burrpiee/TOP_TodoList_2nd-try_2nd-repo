@@ -23,6 +23,7 @@ const cacheDomElements = () => {
     dom.editDueDate = document.getElementById("edit-due-date");
     dom.editPriority = document.getElementById("edit-priority");
     dom.editNotes = document.getElementById("edit-notes");
+    dom.editTodoForm = document.getElementById("edit-todo-form");
     dom.checklistContainer = document.getElementById("checklist-container");
     dom.addChecklistForm = document.getElementById('add-checklist-form');
     dom.checklistItemName = document.getElementById('new-checklist-item');
@@ -142,6 +143,22 @@ const setupEventListeners = () => {
         }
     });
 
+    //Edit Todo form
+    dom.editTodoForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const editingTodo = TodoManager.getTodo(currentProjectId, currentlyEditingTodoId);
+
+        editingTodo.title = dom.editTitle.value.trim();
+        editingTodo.description = dom.editDescription.value.trim();
+        editingTodo.dueDate = dom.editDueDate.value;
+        editingTodo.priority = dom.editPriority.value;
+        editingTodo.editNotes = dom.editNotes.value.trim();
+        
+        TodoManager.saveToLocalStorage();
+        dom.editTodoContainer.classList.toggle('hidden');
+        renderTodos(currentProjectId);
+    });
+
     //Submission of add checklist form
     dom.addChecklistForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -175,7 +192,7 @@ const setupEventListeners = () => {
             checklistItem.completed = !checklistItem.completed;
             TodoManager.saveToLocalStorage();
         }
-    })
+    });
 };
 
 //Rendering of projects in projects list
